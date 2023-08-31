@@ -1,0 +1,45 @@
+name: tactics # you probably want to 'snapcraft register <name>'
+base: core22 # the base snap is the execution environment for this snap
+adopt-info: tactics
+grade: stable # must be 'stable' to release into candidate/stable channels
+confinement: strict # use 'strict' once you have the right plugs and slots
+website: https://github.com/Nokse22/tactics
+license: GPL-3.0
+source-code: https://github.com/Nokse22/tactics
+issues: https://github.com/Nokse22/tactics/issues
+contact: https://github.com/Nokse22/tactics
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+  - build-on: armhf
+
+parts:
+  tactics:
+    plugin: meson
+    source: https://github.com/Nokse22/tactics.git
+    source-tag: 'v0.1.0'
+    source-depth: 1
+    parse-info: [ usr/share/metainfo/io.github.nokse22.tactics.metainfo.xml ]
+    build-packages:
+      - blueprint-compiler
+    meson-parameters:
+      - --prefix=/snap/tactics/current/usr
+    override-build: |
+      craftctl default
+      sed -e '1c#!/usr/bin/env python3' -i ${CRAFT_PART_INSTALL}/snap/tactics/current/usr/bin/tactics
+      chmod +x $CRAFT_PART_INSTALL/snap/tactics/current/usr/bin/tactics
+    organize:
+      snap/tactics/current: .
+
+slots:
+  tactics:
+    interface: dbus
+    bus: session
+    name: io.github.nokse22.tactics
+
+apps:
+  tactics:
+    command: usr/bin/tactics
+    extensions: [ gnome ]
+    common-id: io.github.nokse22.tactics
+    desktop: usr/share/applications/io.github.nokse22.tactics.desktop
