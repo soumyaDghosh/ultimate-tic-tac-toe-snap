@@ -43,3 +43,5 @@ apps:
     extensions: [ gnome ]
     common-id: io.github.nokse22.tactics
     desktop: usr/share/applications/io.github.nokse22.tactics.desktop
+    plugs:
+      - network
