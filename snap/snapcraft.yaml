@@ -1,27 +1,21 @@
-name: ultimate-tic-tac-toe # you probably want to 'snapcraft register <name>'
-base: core22 # the base snap is the execution environment for this snap
+name: ultimate-tic-tac-toe
+base: core24
 adopt-info: ultimate-tic-tac-toe
-grade: stable # must be 'stable' to release into candidate/stable channels
-confinement: strict # use 'strict' once you have the right plugs and slots
-website: https://github.com/Nokse22/ultimate-tic-tac-toe
-license: GPL-3.0
-source-code: https://github.com/Nokse22/ultimate-tic-tac-toe
-issues: https://github.com/Nokse22/ultimate-tic-tac-toe/issues
-contact: https://github.com/Nokse22/ultimate-tic-tac-toe
-architectures:
-  - build-on: amd64
-  - build-on: arm64
-  - build-on: armhf
+grade: stable
+confinement: strict
+platforms:
+  amd64:
+  arm64:
 
 parts:
   ultimate-tic-tac-toe:
     plugin: meson
     source: https://github.com/Nokse22/ultimate-tic-tac-toe.git
-    source-tag: 'v0.1.3'
+    source-tag: 'v0.2.1'
     source-depth: 1
     parse-info: [ usr/share/metainfo/io.github.nokse22.ultimate-tic-tac-toe.metainfo.xml ]
-    build-packages:
-      - blueprint-compiler
+    build-snaps:
+      - blueprint-compiler/latest/edge
     meson-parameters:
       - --prefix=/snap/ultimate-tic-tac-toe/current/usr
     override-build: |
@@ -43,5 +37,3 @@ apps:
     extensions: [ gnome ]
     common-id: io.github.nokse22.ultimate-tic-tac-toe
     desktop: usr/share/applications/io.github.nokse22.ultimate-tic-tac-toe.desktop
-    plugs:
-      - network
